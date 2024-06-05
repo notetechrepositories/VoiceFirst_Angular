@@ -8,8 +8,3 @@ bootstrapApplication(AppComponent, appConfig)
 
 
   
-  bootstrapApplication(AppComponent, {
-    providers: [
-      { provide: HttpClientModule }  // Include HttpClientModule globally here if needed
-    ]
-  }).catch(err => console.error(err));

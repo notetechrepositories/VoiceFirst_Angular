@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HomeComponent } from "./home/home.component";
 import { NavigationFooterComponent } from "./navigation-footer/navigation-footer.component";
-import { RegistrationpageComponent } from './registrationpage/registrationpage.component';
+
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -10,8 +10,7 @@ import { RegistrationpageComponent } from './registrationpage/registrationpage.c
     standalone: true,
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
-    imports: [RouterOutlet,
-        HomeComponent, NavigationFooterComponent,RegistrationpageComponent]
+    imports: [CommonModule, RouterOutlet,NavigationFooterComponent]
 })
 export class AppComponent {
   title = 'VoiceFirst';
