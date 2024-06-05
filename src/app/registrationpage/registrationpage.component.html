@@ -1,0 +1,77 @@
+<div class="banner">
+    <div class="title">
+        <h1 class="name-text col-md-12">Register Your Business on<span class="secondary-color"> Voice First</span></h1>
+        <p class="mt-5" col-md-12>Connect, Respond, Improve – Transform Customer Feedback into Action</p>
+    </div>
+</div>
+<!--  -->
+<div class="wrapper">
+    <div class="container">
+        <form action="" onsubmit="return false;">
+            <h2>REGISTER</h2>
+            <div class="form-group">
+                <input type="text">
+                <label for="companyName">Company Name</label>
+            </div>
+            <div class="form-group">
+                <textarea type="textarea" ></textarea>
+                <label for="address">Address</label>
+            </div>
+            <div class="form-group">
+                <input type="text"  name="pincode" [(ngModel)]="pincode"
+                    (keyup.enter)="getCountryDetailsByPincode()">
+                <label for="pincode">ZIP Code</label>
+            </div>
+            @if(countryViewArray.length==1){
+            <div class="form-group">
+                <input type="text" value="{{countryViewArray[0].countryName}}" readonly>
+                <label for="country">Country</label>
+            </div>
+            }
+            @else{
+            <div class="form-group">
+                <label for="country">Country</label>
+                <select (change)="changeCountry($event)">
+                    <option value="" disabled selected>Select Country</option>
+                    @for (Country of countryViewArray; track $index) {
+                    <option value="{{Country.countryCode}}">{{Country.countryName}}</option>
+                    }
+                </select>
+            </div>
+            }
+
+            @if(regionView!=null){
+            <div class="form-group">
+                <input type="text" name="regionView" [(ngModel)]="regionView" readonly>
+                <label for="regionView">Region</label>
+            </div>
+            }
+            @if(subRegionView!=null){
+            <div class="form-group">
+                <input type="text" name="subRegionView" [(ngModel)]="subRegionView" readonly>
+                <label for="subRegionView">Sub-Region</label>
+            </div>
+            }
+            @if(placeView.length==1){
+            <div class="form-group">
+                <input type="text"  value="{{placeView[0].placeName}}" readonly>
+                <label for="place">Place</label>
+            </div>
+            }
+            @else {
+            <div class="form-group">
+                <label for="place">Place</label>
+                <select id="place">
+                    <option value="" disabled selected>Select Place</option>
+                    @for (Place of placeView; track $index) {
+                    <option value="{{Place}}">{{Place.placeName}}</option>
+                    }
+                </select>
+            </div>
+            }
+
+            <button class="reg-btn" type="submit" name="">REGISTER</button>
+        </form>
+    </div>
+</div>
+<!--  -->

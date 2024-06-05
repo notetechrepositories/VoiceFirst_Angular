@@ -1,0 +1,172 @@
+
+.secondary-color{
+    color: var(--secondary);
+}
+.banner{
+    background-image: url('/assets/images/login-banner1.PNG');
+    background-color: rgb(97, 97, 97);
+    background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 50vh;
+    width:100%
+}
+.banner .title{
+    position: absolute;
+    top: 26%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: aliceblue;
+    letter-spacing: 0.5rem;
+    text-align: center;   
+}
+.name-text{
+    font-weight: bold;
+    font-size: 56px; 
+    font-family: oswald-extralight, oswald, sans-serif;
+}
+
+@media (max-width: 600px) {
+    .banner .title{
+        width:100%;
+    }
+    .name-text{
+        font-size: 25px;
+        margin-top: 30px; 
+    }
+    .banner .title p{
+       font-size: 8px;
+    }
+
+  }
+
+  @media (min-width: 600px )and (max-width: 820px) {
+    .banner .title{
+        width:70%;
+    }
+    .name-text{
+        font-size: 30px;
+        margin-top: 30px; 
+    }
+  }
+  @media (min-width: 820px )and (max-width: 950px) {
+    .banner .title{
+        width:70%;
+    }
+    .name-text{
+        font-size: 40px;
+        margin-top: 30px; 
+    }
+  }
+
+  /* @media (max-width: 891px) {
+   
+    .name-text{
+        font-size: 50px;
+        margin-top: 60px; 
+    }
+
+
+  } */
+/* --------------- */
+
+
+
+.wrapper {
+    position: relative;
+    min-height: 60vh;
+    background-color:transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    top: -150px;
+  }
+  
+  .wrapper .container {
+    position: relative;
+    width: 520px;
+    min-height: 500px;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    overflow: hidden;
+  }
+  
+  form{
+    padding: 30px;
+  }
+ form h2 {
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 30px;
+    color: #555;
+  }
+  
+ .reg-btn {
+    width: 100%;
+    background: var(--secondary);
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: 0.5s;
+    border: none;
+    padding: 10px;
+    margin-bottom: 1rem;
+}
+
+.reg-btn:hover {
+  width: 100%;
+  background: var(--secondary);
+  color: #fff;
+  border: none;
+
+}
+
+
+/* Form */
+.form-group {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+label {
+  position: absolute;
+  top: -10px; 
+  left: 10px;
+  background: white;
+  padding: 0 5px;
+  color: #333;
+  font-size: 12px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid rgb(160, 160, 160); 
+  border-radius: 4px;
+  font-size: 14px; 
+}
+
+input::placeholder, select::placeholder {
+  color: #ccc;
+}
+
+/* Focus styles to outline the box when focused */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border:2px solid var(--secondary);
+}
+input:focus + label, select:focus + label , textarea:focus + label{
+  color: var(--secondary);
+}
+
+
+

@@ -1,0 +1,256 @@
+
+/* Navbar */
+
+.navbar{
+    padding: 10px 200px 10px 200px;
+    z-index: 1000;;
+}
+.dropdown-item{
+    font-size:13px
+}
+.nav-item img{
+    cursor: pointer;
+    margin-top: 2px;
+}
+
+@media screen and (max-width: 600px) {
+    .navbar{
+        padding: 10px;
+    }
+}
+
+
+/* SIGNUP Button */
+
+.button-81 {
+    background-color:transparent;
+    border: 2px solid #9b9d9e;
+    box-sizing: border-box;
+    color: #9b9d9e;
+    cursor: pointer;
+    display: inline-block;
+    font-size: .9rem;
+    font-weight: 500;
+    line-height: 1;
+    border-radius: 0rem;
+    padding: .5rem .7rem;
+    text-align: center;
+    text-decoration: none #0d172a solid;
+    text-decoration-thickness: auto;
+    transition: all .5s cubic-bezier(.4, 0, .2, 1);
+    box-shadow: 0px 1px 2px rgba(166, 175, 195, 0.25);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    margin-right: 20px;
+  }
+  
+  .button-81:hover {
+    background-color: #f3f2f2;
+    color: #202428;
+  }
+  
+  @media (max-width: 600px) {
+    .button-81 {
+        margin-bottom: 10px;
+        
+    }
+  }
+  
+
+/* =============================== */
+
+a{
+    text-decoration:none !important;
+    min-width: fit-content;
+    width: fit-content;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+}
+
+a, button{
+    transition:0.5s;
+}
+
+a, p{
+    font-size:14px;
+}
+
+h1, h2, h3, h4, h5, h6{
+    color:rgb(255 255 255);
+    font-weight:600;
+}
+
+a, button, input, textarea, select{
+    outline:none !important;
+}
+
+fieldset{
+    border:0;
+}
+
+.title{
+    color:var(--primary);
+}
+
+.flex, .fixed_flex{
+    display:flex;
+}
+
+
+.btn{
+    padding:0.8rem 2rem;
+    border-radius:5px;
+    text-align:center;
+    font-weight:500;
+    text-transform:uppercase;
+}
+
+.btn_1{
+    border:1px solid var(--primary);
+    background-color:var(--primary);
+    color:var(--secondary);
+}
+
+.btn_1:hover{
+    background-color:transparent;
+    color:var(--primary);
+}
+
+.btn_2{
+    border:1px solid var(--secondary);
+    background-color:var(--secondary);
+    color:var(--primary);
+}
+
+.btn_2:hover{
+    border:1px solid var(--primary);
+    background-color:var(--primary);
+    color:var(--secondary);
+}
+
+@media (max-width:920px){
+    .flex{
+        flex-wrap:wrap;
+    }
+  
+    .btn{
+        padding:0.5rem 1rem;
+        font-size: 9px;
+    }
+    
+    a, p{
+        font-size:12px;
+    }
+}
+
+
+
+
+/***************************
+               FOOTER
+****************************/
+footer{
+    background-color:#212529;;
+    color:rgb(255 255 255);
+    padding: 4rem;
+}
+
+.footer-content{
+    width:100%;
+    position:relative;
+    padding:1rem;
+}
+
+footer h3{
+    color:var(--secondary);
+    margin-bottom:1.5rem;
+}
+
+footer a{
+    color:rgba(255,255,255,0.6);
+    display:block;
+    margin:15px 0;
+}
+
+footer a:hover{
+    color:var(--secondary);
+}
+
+footer fieldset{
+    padding:0;
+}
+
+footer fieldset input{
+    background-color: #323232;
+    border: 0;
+    color: rgb(255 255 255 / 60%);
+    padding: 1rem;
+}
+
+footer fieldset .btn{
+    border-radius:0;
+    border:0;
+}
+
+footer fieldset .btn_2:hover{
+    background-color:var(--secondary);
+    border:0;
+    color:var(--primary);
+}
+
+footer .flex:last-child{
+    align-items:center;
+}
+
+footer .flex:last-child .footer-content:last-child{
+    text-align:right;
+}
+
+footer .flex:last-child p{
+    color:var(--white);
+}
+
+footer .flex:last-child a{
+    width: 40px;
+    display: inline-block;
+    background-color: var(--secondary);
+    color: var(--white);
+    padding: 0.5rem;
+    margin-right: 3px;
+    text-align: center;
+}
+
+footer .flex:last-child a:hover{
+    background-color:var(--white);
+    color:var(--gray);
+}
+
+@media (max-width:1100px){
+    footer .flex:first-child{
+        flex-wrap:wrap;
+    }
+    
+    footer .flex:first-child .footer-content{
+        flex: 1 1 40%;
+    }
+}
+
+@media (max-width:920px){
+    footer .flex:last-child .footer-content:last-child{
+        text-align:left;
+    }
+    fieldset input{
+        width:100%;
+        height: 0px;
+        font-size: 8px;
+    }
+}
+
+@media (max-width:320px){
+    footer .flex:first-child .footer-content{
+        flex:1 1 100%;
+    }
+
+    
+}
