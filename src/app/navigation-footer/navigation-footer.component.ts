@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
-import { HomeComponent } from "../home/home.component";
-import { LoginRegisterComponent } from "../login-register/login-register.component";
-import { RegistrationpageComponent } from "../registrationpage/registrationpage.component";
-import { RouterModule, Routes } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet, } from '@angular/router';
 
 
 
@@ -12,11 +9,15 @@ import { RouterModule, Routes } from '@angular/router';
     standalone: true,
     templateUrl: './navigation-footer.component.html',
     styleUrl: './navigation-footer.component.css',
-    imports: [HomeComponent, LoginRegisterComponent, RegistrationpageComponent,RouterModule]
+    imports: [RouterOutlet,RouterLink,RouterLinkActive]
 })
 export class NavigationFooterComponent {
 
-    constructor(){}
+   constructor(private router:Router){}
+
+   goToLogin(){
+    this.router.navigate(['/login-register']);
+   }
 
 
 }

@@ -8,24 +8,21 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link"  href="#" routerLinkActive="active">Home</a>
           </li>
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="#">Login</a>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">aaaaa</a>
           </li>
           
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-          </li> -->
         </ul>
         <form class="d-flex">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <button class="button-81" role="button" >Login</button>
+                    <button class="button-81" role="button" (click)="goToLogin()" >Login</button>
                 </li>
-                <!-- <li class="nav-item">
+                <li class="nav-item">
                   <img src="assets/icons/user-icon.png" alt="" width="30" height="30" class="d-inline-block">
-                </li> -->
+                </li>
                 <li class="nav-item dropdown ml-2">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       Aswald Rich
@@ -42,14 +39,12 @@
       </div>
     </div>
   </nav>
-<!--  -->
 
-<!-- <app-home></app-home> -->
-<!-- <app-login-register></app-login-register> -->
-<!-- <router-outlet></router-outlet> -->
-<app-registrationpage></app-registrationpage> 
 
-<!--  -->
+<router-outlet></router-outlet> 
+
+
+
   <footer>
     <div class="flex">
       <section class="footer-content">
