@@ -1,0 +1,38 @@
+.banner{
+    background-image: url('/assets/images/home-banner.PNG');
+    background-color: rgb(97, 97, 97);
+    background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 70vh;
+    width:100%
+}
+.banner .title{
+    position: absolute;
+    top: 26%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: aliceblue;
+    letter-spacing: 0.5rem;
+    text-align: center;   
+}
+.name-text{
+    font-weight: bold;
+    font-size: 70px; 
+    font-family: oswald-extralight, oswald, sans-serif;
+}
+
+@media (max-width: 600px) {
+  .banner .title{
+      width:100%;
+  }
+  .name-text{
+      font-size: 25px;
+      margin-top: 30px; 
+  }
+  .banner .title p{
+     font-size: 8px;
+  }
+
+}

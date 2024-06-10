@@ -2,6 +2,9 @@
 .secondary-color{
     color: var(--secondary);
 }
+a{
+  cursor: pointer;
+}
 .banner{
     background-image: url('/assets/images/login-banner1.PNG');
     background-color: rgb(97, 97, 97);
