@@ -161,6 +161,10 @@ footer h3{
     margin-bottom:1.5rem;
 }
 
+.footer-logo{
+    height: 80px;
+}
+
 footer a{
     color:rgba(255,255,255,0.6);
     display:block;
@@ -240,7 +244,11 @@ footer .flex:last-child a:hover{
         font-size: 8px;
     }
 }
-
+@media (max-width:600px){
+    .footer-logo{
+        height: 50px;
+    }
+}
 @media (max-width:320px){
     footer .flex:first-child .footer-content{
         flex:1 1 100%;
