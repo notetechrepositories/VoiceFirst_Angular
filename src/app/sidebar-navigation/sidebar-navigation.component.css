@@ -1,0 +1,16 @@
+ul li{
+    margin-bottom:20px;
+}
+
+.ul li:hover{
+    color: aliceblue;
+}
+.nav-text ,.nav-link i{
+    color: #b3b3b3;
+}
+
+@media (min-width: 1200px) {
+    .col-xl-2 {
+        width: 13.666667%;
+    }
+}
