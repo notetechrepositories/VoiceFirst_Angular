@@ -17,6 +17,9 @@ body{
     font-family: 'Poppins', sans-serif;
     width: 100%;
 }
+i{
+  cursor: pointer;
+}
 
 
 

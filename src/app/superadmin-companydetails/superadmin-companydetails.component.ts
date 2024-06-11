@@ -10,76 +10,66 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
-import { ImportsModule } from '../import';
+import { DialogModule } from 'primeng/dialog';
+import { HttpClientModule } from '@angular/common/http'; 
 
 
 
-export interface SelectItem<T = any> {
-  label?: string;
-  value: T;
-  styleClass?: string;
-  icon?: string;
-  title?: string;
-  disabled?: boolean;
-}
 @Component({
   selector: 'app-superadmin-companydetails',
   standalone: true,
-  imports: [TableModule,ToastModule,CommonModule,TagModule,DropdownModule,ButtonModule,InputTextModule,FormsModule],
+  imports: [TableModule,ToastModule,CommonModule,TagModule,DropdownModule,ButtonModule,InputTextModule,FormsModule,HttpClientModule,DialogModule],
   providers: [MessageService, CompanyService],
   templateUrl: './superadmin-companydetails.component.html',
   styleUrl: './superadmin-companydetails.component.css'
 })
 export class SuperadminCompanydetailsComponent {
-  products!: CompanyModel[];
 
-  statuses!: SelectItem[];
 
-  clonedProducts: { [s: string]: CompanyModel } = {};
+  company!: CompanyModel[];
+
+  companyListView:boolean=true;
+  AddCompanyvisible:boolean=false;
 
   constructor(private companyService: CompanyService, private messageService: MessageService) {}
 
   ngOnInit() {
-      this.companyService.getProductsMini().then((data) => {
-          this.products = data;
-      });
-
-      this.statuses = [
-          { label: 'In Stock', value: 'INSTOCK' },
-          { label: 'Low Stock', value: 'LOWSTOCK' },
-          { label: 'Out of Stock', value: 'OUTOFSTOCK' }
-      ];
+    this.getCompanyDetails();
   }
 
-  onRowEditInit(product: CompanyModel) {
-      this.clonedProducts[product.id as string] = { ...product };
-  }
-
-  onRowEditSave(product: CompanyModel) {
-      if (product.price > 0) {
-          delete this.clonedProducts[product.id as string];
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product is updated' });
-      } else {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Price' });
+  getCompanyDetails(){
+    this.companyService.getCompantDetails().subscribe({
+      next:(res)=>{
+        this.company=res;
+        console.log(this.company);
+      },
+      error:(error)=>{
+        console.log(error);
       }
+    })
   }
 
-  onRowEditCancel(product: CompanyModel, index: number) {
-      this.products[index] = this.clonedProducts[product.id as string];
-      delete this.clonedProducts[product.id as string];
+  getStatusLabel(status: number) {
+    return status === 1 ? 'APPROVED' : 'UNAPPROVED';
   }
 
-  getSeverity(status: string) {
-    switch (status) {
-        case 'INSTOCK':
-            return 'success';
-        case 'LOWSTOCK':
-            return 'warning';
-        case 'OUTOFSTOCK':
-            return 'danger';
-        default:
-            return 'info';  // Default case added
-    }
+  getSeverityisApproved(status: number) {
+    return status === 1 ? 'success' : 'warning';
+  }
+
+  getSeverityisActive(status: number) {
+    return status === 1 ? 'success' : 'danger';
+  }
+
+  onCompanyView(){
+    this.companyListView=false;
+  }
+
+  showAddCompanyDialog(){
+    this.AddCompanyvisible=true;
+  }
+  onCompanyback(){
+    this.companyListView=true;
+  }
 }
 
-}

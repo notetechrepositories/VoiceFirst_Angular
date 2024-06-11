@@ -1,0 +1,125 @@
+.trash-icon:hover{
+    color: rgb(221, 50, 50);
+}
+td {
+    font-size:.9rem;
+}
+
+.companyadd-btn{
+  background: #212529;
+  padding: 10px;
+  color: aliceblue;
+  border-radius: 5px;
+}
+
+/* view Button */
+
+.view-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 6px;
+    border: none;
+    color: #fff;
+    font-size: .8rem;
+    background: linear-gradient(180deg, #4B91F7 0%, #367AF6 100%);
+    background-origin: border-box;
+    box-shadow: 0px 0.5px 1.5px rgba(54, 122, 246, 0.25), inset 0px 0.8px 0px -0.25px rgba(255, 255, 255, 0.2);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+  .view-btn:focus {
+    box-shadow: inset 0px 0.8px 0px -0.25px rgba(255, 255, 255, 0.2), 0px 0.5px 1.5px rgba(54, 122, 246, 0.25), 0px 0px 0px 3.5px rgba(58, 108, 217, 0.5);
+    outline: 0;
+  }
+
+  /* company profile image */
+
+  #profileImage {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: #9b9b9b;
+    font-size: 35px;
+    color: #fff;
+    text-align: center;
+    line-height: 150px;
+    margin: 20px 0;
+    border:10px solid gainsboro;
+  }
+
+  .upload-button{
+    margin-top: -26px;
+    font-size: 1.4rem;
+    color: #3f3f3f;
+  }
+
+  .text-secondary{
+    font-size: 13px;
+  }
+  h6{
+    font-size: 14px;
+  }
+
+  
+  /* Branch table */
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .table td,
+  .table th {
+    padding: 12px 15px;
+    border: 1px solid #eeeeee;
+    text-align: center;
+    font-size: 13px;
+  }
+  
+  .table th {
+    background-color: #464646;
+    color: #ffffff;
+  }
+  
+  .table tbody tr:nth-child(even) {
+    background-color: #bdbdbd !important;
+}
+  
+  /*responsive*/
+  
+  @media (max-width: 500px) {
+    .table thead {
+      display: none;
+    }
+  
+    .table,
+    .table tbody,
+    .table tr,
+    .table td {
+      display: block;
+      width: 100%;
+    }
+    .table tr {
+      margin-bottom: 15px;
+    }
+    .table td {
+      padding-left: 50%;
+      text-align: left;
+      position: relative;
+    }
+    .table td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 0;
+      width: 50%;
+      padding-left: 15px;
+      font-size: 15px;
+      font-weight: bold;
+      text-align: left;
+    }
+  }
