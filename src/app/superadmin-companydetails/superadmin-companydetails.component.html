@@ -11,7 +11,7 @@
     <div>
         <div class="card col-md-12">
             <p-toast></p-toast>
-            <p-table [value]="company" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+            <p-table [value]="company" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}" [globalFilterFields]="['companies.status', 'companies.is_active']">
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="width:18%">Company Name</th>
@@ -32,11 +32,12 @@
                         <td>{{companies.region}}</td>
                         <td >
                             <p-tag 
-                            [value]="getStatusLabel(companies.is_active)"
-                            [severity]="getSeverityisApproved(companies.is_active)"
+                            [value]="companies.status"
+                            [severity]="getSeverityisApproved(companies.status)"
                             *ngIf="!editing" 
                             [ngStyle]="{'cursor': 'pointer'}"
-                            [rounded]="true"/>
+                            [rounded]="true"
+                            [style]="{'width':'100px'}"/>
                         </td>
                         <td>
                             <button class="view-btn" role="button" (click)="onCompanyView()">View</button>
@@ -47,9 +48,7 @@
                         <td >
                             <p-tag 
                             [value]=""
-                            [severity]="getSeverityisActive(companies.is_active)"
-                            *ngIf="!editing" 
-                            [ngStyle]="{'cursor': 'pointer'}"></p-tag>
+                            [severity]="getSeverityisActive(companies.is_active)" />
                         </td>
                     </tr>
                 </ng-template>
@@ -262,84 +261,126 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
-          <div class="row g-2">
+        <form >
+          <div class="row g-2 mt-2">
             <div class="col-md">
               <div class="form-floating">
-                <input type="text" class="form-control" id="floatingInputGrid">
+                <input type="text" class="form-control" id="floatingInputGrid" [(ngModel)]="companyRegistration.company_name" name="company_name">
                 <label for="floatingInputGrid">Company Name</label>
               </div>
             </div>
             <div class="col-md">
               <div class="form-floating">
-                <input type="text" class="form-control" id="floatingInputGrid">
+                <input type="text" class="form-control" id="floatingInputGrid" [(ngModel)]="companyRegistration.user_name" name="user_name">
                 <label for="floatingInputGrid">Username</label>
               </div>
             </div>
           </div>
-          <div class="row g-2">
+          <div class="row g-2 mt-2">
             <div class="col-md">
               <div class="form-floating">
-                <input type="text" class="form-control" id="floatingInputGrid">
+                <input type="text" class="form-control" id="floatingInputGrid" [(ngModel)]="companyRegistration.email" name="email">
+                <label for="floatingInputGrid">Email</label>
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="floatingInputGrid" [(ngModel)]="companyRegistration.phone_number" name="phone_number">
+                <label for="floatingInputGrid">Phone</label>
+              </div>
+            </div>
+          </div>
+          <div class="row g-2 mt-2">
+            <div class="col-md">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="floatingInputGrid" [(ngModel)]="companyRegistration.address" name="address">
                 <label for="floatingInputGrid">Address</label>
               </div>
             </div>
             <div class="col-md">
               <div class="form-floating">
-                <input type="text" class="form-control" id="floatingInputGrid">
+                <input type="text" class="form-control" id="floatingInputGrid" [(ngModel)]="companyRegistration.pincode" 
+                        name="pincode" (keyup)="getCountryDetailsByPincode($event)">
                 <label for="floatingInputGrid">ZIP-Code</label>
               </div>
             </div>
           </div>
-          <div class="row g-2">
+          <div class="row g-2 mt-2">
+            <div class="col-md">
+              @if (countryViewArray.length==1) {
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="floatingInputGrid" [(ngModel)]="companyRegistration.country" 
+                          name="country" value="{{countryViewArray[0].countryName}}" readonly>
+                  <label for="floatingInputGrid">Country</label>
+                </div>
+              }
+              @else {
+                <div class="form-floating">
+                  <select class="form-select" id="floatingSelectGrid" [(ngModel)]="companyRegistration.country" name="country" (change)="changeCountry($event)">
+                    <option selected disabled></option>
+                      @for (Country of countryViewArray; track $index) {
+                      <option value="{{Country.countryCode}}">{{Country.countryName}}</option>
+                      }
+                  </select>
+                  <label for="floatingSelectGrid">Country</label>
+                </div>
+              }
+            </div>
+            @if(regionView!=null){
             <div class="col-md">
               <div class="form-floating">
-                <select class="form-select" id="floatingSelectGrid">
-                  <option selected>Open this select menu</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
-                <label for="floatingSelectGrid">Works with selects</label>
+                <input type="text" class="form-control" id="floatingInputGrid" [(ngModel)]="companyRegistration.region" name="region" readonly>
+                <label for="floatingInputGrid">Region</label>
+              </div>
+            </div>
+          }
+          </div>
+          <div class="row g-2 mt-2">
+            @if(subRegionView!=null){
+              <div class="col-md">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="floatingInputGrid" [(ngModel)]="companyRegistration.sub_region" name="sub_region" readonly>
+                  <label for="floatingInputGrid">Sub-Region</label>
+                </div>
+              </div>
+            }
+            <div class="col-md">
+              @if(placeView.length==1 || placeView.length==0){
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="floatingInputGrid" [(ngModel)]="companyRegistration.place" name="place" readonly>
+                  <label for="floatingInputGrid">Place</label>
+                </div>
+              }
+              @else {
+                <div class="form-floating">
+                  <select class="form-select" id="floatingSelectGrid" [(ngModel)]="companyRegistration.place" name="place">
+                    <option selected disabled></option>
+                    @for (Place of placeView; track $index) {
+                      <option value="{{Place.placeName}}">{{Place.placeName}}</option>
+                      }
+                  </select>
+                  <label for="floatingSelectGrid">Place</label>
+                </div>
+              }
+            </div>
+          </div>
+          <div class="row g-2 mt-2">
+            <div class="col-md">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="floatingInputGrid" [(ngModel)]="companyRegistration.latitude" name="latitude">
+                <label for="floatingInputGrid">Latitude</label>
               </div>
             </div>
             <div class="col-md">
               <div class="form-floating">
-                <select class="form-select" id="floatingSelectGrid">
-                  <option selected>Open this select menu</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
-                <label for="floatingSelectGrid">Works with selects</label>
+                <input type="text" class="form-control" id="floatingInputGrid" [(ngModel)]="companyRegistration.longitude" name="longitude">
+                <label for="floatingInputGrid">Longitude</label>
               </div>
             </div>
           </div>
-          <div class="row g-2">
-            <div class="col-md">
-              <div class="form-floating">
-                <select class="form-select" id="floatingSelectGrid">
-                  <option selected>Open this select menu</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
-                <label for="floatingSelectGrid">Works with selects</label>
-              </div>
-            </div>
-            <div class="col-md">
-              <div class="form-floating">
-                <select class="form-select" id="floatingSelectGrid">
-                  <option selected>Open this select menu</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
-                <label for="floatingSelectGrid">Works with selects</label>
-              </div>
-            </div>
+          <div class="row g-2 mt-2">
+            <button class="companyadd-btn" (click)="onRegister()">Register</button>
           </div>
-          
         </form>
       </div>
     </div>
