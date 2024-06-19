@@ -7,70 +7,116 @@
 <!--  -->
 <div class="wrapper">
     <div class="container">
-        <form action="" onsubmit="return false;">
+        <form action="" [formGroup]="companyRegForm">
             <h2>REGISTER</h2>
-            <div class="form-group">
-                <input type="text">
-                <label for="companyName">Company Name</label>
+            <div class="row">
+                <div class="form-group col-md">
+                    <input type="text"  formControlName="company_name">
+                    <label for="companyName">Company Name</label>
+                </div>
+                <div class="form-group col-md">
+                    <input type="text" formControlName="username">
+                    <label for="companyName">Username</label>
+                </div>
             </div>
-            <div class="form-group">
-                <textarea type="textarea" ></textarea>
-                <label for="address">Address</label>
+            <div class="row">
+                <div class="form-group col-md">
+                    <input type="email"  formControlName="company_name">
+                    <label for="companyName">Email</label>
+                </div>
+                <div class="form-group col-md">
+                    <input type="text" formControlName="mobile">
+                    <label for="companyName">Phone</label>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="text"  name="pincode" [(ngModel)]="pincode"
-                    (keyup.enter)="getCountryDetailsByPincode()">
-                <label for="pincode">ZIP Code</label>
+            <div class="row">
+                <div class="form-group col-md">
+                    <input type="text" formControlName="address">
+                    <label for="address">Address</label>
+                </div>
+                <div class="form-group col-md">
+                    <input type="text"  name="pincode" formControlName="pincode"
+                        (keyup)="getCountryDetailsByPincode($event)">
+                    <label for="pincode">ZIP Code</label>
+                </div>
             </div>
-            @if(countryViewArray.length==1){
-            <div class="form-group">
-                <input type="text" value="{{countryViewArray[0].countryName}}" readonly>
-                <label for="country">Country</label>
-            </div>
-            }
-            @else{
-            <div class="form-group">
-                <label for="country">Country</label>
-                <select (change)="changeCountry($event)">
-                    <option value="" disabled selected>Select Country</option>
-                    @for (Country of countryViewArray; track $index) {
-                    <option value="{{Country.countryCode}}">{{Country.countryName}}</option>
+            <div class="row">
+                @if(countryViewArray.length==1){
+                    <div class="form-group col-md">
+                        <input type="text" value="{{countryViewArray[0].countryName}}" formControlName="country" readonly>
+                        <label for="country">Country</label>
+                    </div>
                     }
-                </select>
-            </div>
-            }
-
-            @if(regionView!=null){
-            <div class="form-group">
-                <input type="text" name="regionView" [(ngModel)]="regionView" readonly>
-                <label for="regionView">Region</label>
-            </div>
-            }
-            @if(subRegionView!=null){
-            <div class="form-group">
-                <input type="text" name="subRegionView" [(ngModel)]="subRegionView" readonly>
-                <label for="subRegionView">Sub-Region</label>
-            </div>
-            }
-            @if(placeView.length==1){
-            <div class="form-group">
-                <input type="text"  value="{{placeView[0].placeName}}" readonly>
-                <label for="place">Place</label>
-            </div>
-            }
-            @else {
-            <div class="form-group">
-                <label for="place">Place</label>
-                <select id="place">
-                    <option value="" disabled selected>Select Place</option>
-                    @for (Place of placeView; track $index) {
-                    <option value="{{Place}}">{{Place.placeName}}</option>
+                    @else{
+                    <div class="form-group col-md">
+                        <label for="country">Country</label>
+                        <select (change)="changeCountry($event)" formControlName="country">
+                            <option value="" disabled selected></option>
+                            @for (Country of countryViewArray; track $index) {
+                            <option value="{{Country.countryCode}}">{{Country.countryName}}</option>
+                            }
+                        </select>
+                    </div>
                     }
-                </select>
+                    @if(regionView!=null){
+                        <div class="form-group col-md">
+                            <input type="text" name="regionView" [(ngModel)]="regionView" formControlName="region" readonly>
+                            <label for="regionView">Region</label>
+                        </div>
+                        }
             </div>
-            }
+           
 
-            <button class="reg-btn" type="submit" name="">REGISTER</button>
+            <div class="row">
+                @if(subRegionView!=null){
+                    <div class="form-group col-md">
+                        <input type="text" name="subRegionView" [(ngModel)]="subRegionView" formControlName="sub_region" readonly>
+                        <label for="subRegionView">Sub-Region</label>
+                    </div>
+                    }
+                    @if(placeView.length==1){
+                    <div class="form-group col-md">
+                        <input type="text"  formControlName="place" readonly>
+                        <label for="place">Place</label>
+                    </div>
+                    }
+                    @else {
+                    <div class="form-group col-md">
+                        <label for="place">Place</label>
+                        <select formControlName="place">
+                            <option value="" disabled selected></option>
+                            @for (Place of placeView; track $index) {
+                            <option value="{{Place}}">{{Place.placeName}}</option>
+                            }
+                        </select>
+                    </div>
+                    }
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md">
+                    <input type="text" formControlName="latitude">
+                    <label for="companyName">Latitude</label>
+                </div>
+                <div class="form-group col-md">
+                    <input type="text" formControlName="longitude">
+                    <label for="companyName">Longitude</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md">
+                    <input type="password" formControlName="password">
+                    <label for="companyName">Password</label>
+                </div>
+                <div class="form-group col-md">
+                    <input type="password">
+                    <label for="companyName">Confirm Password</label>
+                </div>
+            </div>
+            
+
+            <button class="reg-btn" type="submit" (click)="onRegister()">REGISTER</button>
         </form>
     </div>
 </div>

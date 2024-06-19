@@ -9,11 +9,12 @@ import { TagModule } from 'primeng/tag';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,FormControl,Validators } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { HttpClient, HttpClientModule } from '@angular/common/http'; 
 import { CompanyRegistrationModel } from '../model/CompanyRegistrationModel';
 import { log } from 'console';
+
 
 
 
@@ -30,6 +31,7 @@ export class SuperadminCompanydetailsComponent {
 
 
   company!: CompanyModel[];
+
   companyRegistration: CompanyRegistrationModel = new CompanyRegistrationModel()
 
   companyListView:boolean=true;
@@ -44,9 +46,12 @@ export class SuperadminCompanydetailsComponent {
   regionView!: string;
   subRegionView!: string;
   placeView: any[] = [];
+  companyId!:number;
+ 
+  branch:any[]=[];
+  companyWithBranch:any;
 
-
-
+  
 
   constructor(private companyService: CompanyService, private http: HttpClient) {}
 
@@ -72,6 +77,8 @@ export class SuperadminCompanydetailsComponent {
     return status === 1 ? 'APPROVED' : 'UNAPPROVED';
   }
 
+
+
   getSeverityisApproved(status: string) {
     return status === "APPROVED" ? 'success' : 
        status === "DECLINED" ? 'danger' : 
@@ -82,19 +89,54 @@ export class SuperadminCompanydetailsComponent {
     return status === 1 ? 'success' : 'danger';
   }
 
-  onCompanyView(){
+  onCompanyView(id:number){
     this.companyListView=false;
+    this.companyService.getBranchwithCompanyId(id).subscribe({
+      next:(res)=>{
+          console.log(res);
+          this.companyWithBranch=res;
+          this.branch=res.getBranch;
+          console.log(this.branch);
+          
+          
+      },
+      error:(error)=>{
+        console.log(error);
+        
+      }
+    })
+  }
+
+  onstatusClick(id:number){
+    this.companyId=id;
+  }
+  onStatusChange(status:number){
+    this.companyService.updateStatusBySuperadmin(this.companyId,status).subscribe({
+      next:(res)=>{
+        console.log(res);
+        const company = this.company.find(c => c.company_id === this.companyId);
+        if (company) {
+          if(status==1){
+            company.status = "DECLINED";
+          }
+          else if(status==0){
+            company.status="APPROVED";
+          }
+        }
+      },
+      error:(error)=>{
+        console.log(error);
+      }
+    })
   }
 
   showAddCompanyDialog(){
     this.AddCompanyvisible=true;
   }
+
   onCompanyback(){
     this.companyListView=true;
   }
-
-// -------------------------------------------
-
 
   fetchCountries() {
     this.http.get<any[]>('/assets/countryList.json').subscribe({
@@ -105,6 +147,23 @@ export class SuperadminCompanydetailsComponent {
         console.error('There was an error fetching the JSON data!', error);
       },
     });
+  }
+
+// -------------------------------------------
+
+  onAddCompany(){
+    this.companyRegistration.country='';
+    this.companyRegistration.region='';
+    this.companyRegistration.sub_region='';
+    this.companyRegistration.place='';
+    this.companyRegistration.company_name='';
+    this.companyRegistration.user_name='';
+    this.companyRegistration.pincode='';
+    this.companyRegistration.address='';
+    this.companyRegistration.latitude=0;
+    this.companyRegistration.longitude=0;
+    this.companyRegistration.email='';
+    this.companyRegistration.phone_number='';
   }
 
   getCountryDetailsByPincode(event:any) {
@@ -199,17 +258,19 @@ export class SuperadminCompanydetailsComponent {
     
     // this.companyRegistration.country=country.countryName;
      
-    this.companyService.registerCompany(this.companyRegistration).subscribe({
+    this.companyService.registerCompanyByAdmin(this.companyRegistration).subscribe({
       next:(res)=>{
         console.log(res);
-        
       },
       error:(error)=>{
         console.log(error);
-        
       }
     })
     
   }
+
+// -----------------------------------------
+
+
 }
 

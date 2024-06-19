@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import { MasterService } from '../master.service';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { log } from 'console';
+import { CompanyService } from '../services/company.service';
+
 
 @Component({
   selector: 'app-registrationpage',
   standalone: true,
-  imports: [FormsModule, HttpClientModule],
+  imports: [FormsModule, HttpClientModule,ReactiveFormsModule],
   templateUrl: './registrationpage.component.html',
   styleUrl: './registrationpage.component.css',
 })
@@ -21,10 +22,37 @@ export class RegistrationpageComponent {
   subRegionView!: string;
   placeView: any[] = [];
 
-  constructor(private http: HttpClient) {}
+  companyRegForm!:FormGroup;
+
+  constructor(private http: HttpClient,
+              private fb:FormBuilder,
+              private companyService:CompanyService
+              ) {}
 
   ngOnInit() {
     this.fetchCountries();
+    this.formfile();
+  }
+
+
+  formfile(){
+
+    this.companyRegForm = this.fb.group({
+      company_name: ['', Validators.required],
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      mobile: ['', Validators.required],
+      address: ['', Validators.required],
+      pincode: ['', Validators.required],
+      country: ['', Validators.required],
+      region: ['', Validators.required],
+      sub_region: ['', Validators.required],
+      place: ['', Validators.required],
+      latitude: ['', Validators.required],
+      longitude: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+
   }
 
   fetchCountries() {
@@ -38,7 +66,8 @@ export class RegistrationpageComponent {
     });
   }
 
-  getCountryDetailsByPincode() {
+  getCountryDetailsByPincode(event:any) {
+    this.pincode=event.target.value
     this.countryViewArray = [];
     this.placeView = [];
     this.regionView = '';
@@ -92,7 +121,11 @@ export class RegistrationpageComponent {
     this.placeView = this.data.postalcodes.filter(
       (country: any) => country.countryCode === event.target.value
     );
-
+    if(this.placeView.length==1){
+      this.companyRegForm.patchValue({
+        place: this.placeView[0].placeName
+      });
+    }
     if (this.placeView[0].adminName1 != '') {
       this.regionView = this.placeView[0].adminName1;
     }
@@ -100,4 +133,22 @@ export class RegistrationpageComponent {
       this.subRegionView = this.placeView[0].adminName2;
     }
   }
+
+
+
+
+onRegister(){
+  console.log(this.companyRegForm.value);
+  // this.companyService.registerCompanyByCompany(this.companyRegForm.value).subscribe({
+  //   next:(res)=>{
+  //     console.log(res);
+  //   },
+  //   error:(error)=>{
+  //     console.log(error);
+  //   }
+  // })
+  
+}
+
+
 }

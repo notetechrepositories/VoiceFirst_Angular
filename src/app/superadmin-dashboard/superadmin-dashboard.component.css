@@ -1,0 +1,40 @@
+.order-card {
+    color: #fff;
+}
+
+.card {
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+    box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+    border: none;
+    margin-bottom: 30px;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(45deg,#ed535e,#ff869a);
+    box-shadow: rgba(46, 46, 46, 0.35) 0px 5px 15px;
+}
+
+.card:hover{
+    background-color: #ec444f;
+}
+
+.card .card-block {
+    padding: 25px;
+}
+
+.order-card i {
+    font-size: 26px;
+}
+
+.f-left {
+    float: left;
+}
+
+.f-right {
+    float: right;
+}
+
+hr{
+    height: 2px;
+    background-color: rgb(216, 216, 216);
+}
