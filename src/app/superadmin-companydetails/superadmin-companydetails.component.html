@@ -6,7 +6,7 @@
 {
     <div class="row mb-5">
         <div class="col-md-6"><h2>Company List</h2></div>
-        <div class="col-md-6 d-flex justify-content-end"><button class="companyadd-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add Company</button></div>
+        <div class="col-md-6 d-flex justify-content-end"><button class="companyadd-btn" data-bs-toggle="modal" data-bs-target="#AddCompanyModal">Add Company</button></div>
     </div>
     <div>
         <div class="card col-md-12">
@@ -37,10 +37,13 @@
                             *ngIf="!editing" 
                             [ngStyle]="{'cursor': 'pointer'}"
                             [rounded]="true"
-                            [style]="{'width':'100px'}"/>
+                            [style]="{'width':'100px'}"
+                            (click)="onstatusClick(companies.company_id)"
+                            data-bs-toggle="modal" data-bs-target="#statusChangeModal"/>
+                            
                         </td>
                         <td>
-                            <button class="view-btn" role="button" (click)="onCompanyView()">View</button>
+                            <button class="view-btn" role="button" (click)="onCompanyView(companies.company_id)">View</button>
                         </td>
                         <td>
                             <i class="bi bi-trash3-fill trash-icon"></i>
@@ -85,7 +88,7 @@
                         <h6 class="mb-0">Company Name</h6>
                       </div>
                       <div class="col-sm-9 text-secondary">
-                        Kenneth Valdez
+                        {{companyWithBranch.company_name}}
                       </div>
                     </div>
                     <hr>
@@ -94,7 +97,7 @@
                           <h6 class="mb-0">Address</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          Bay Area, San Francisco, CA
+                          {{companyWithBranch.address}}
                         </div>
                       </div>
                     <hr>
@@ -103,7 +106,7 @@
                         <h6 class="mb-0">Email</h6>
                       </div>
                       <div class="col-sm-9 text-secondary">
-                        fip
+                        {{companyWithBranch.email}}
                       </div>
                     </div>
                     <hr>
@@ -112,7 +115,7 @@
                         <h6 class="mb-0">Mobile</h6>
                       </div>
                       <div class="col-sm-9 text-secondary">
-                        (320) 380-4539
+                        {{companyWithBranch.phone_number}}
                       </div>
                     </div>
                     <hr>
@@ -121,7 +124,7 @@
                           <h6 class="mb-0">Country</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          India
+                          {{companyWithBranch.country}}
                         </div>
                     </div>
                     <hr>
@@ -130,7 +133,7 @@
                           <h6 class="mb-0">Region</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          India
+                          {{companyWithBranch.region}}
                         </div>
                     </div>
                     <hr>
@@ -139,7 +142,7 @@
                           <h6 class="mb-0">Sub-region</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          India
+                          {{companyWithBranch.sub_region}}
                         </div>
                     </div>
                     <hr>
@@ -148,7 +151,7 @@
                           <h6 class="mb-0">Place</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          India
+                          {{companyWithBranch.place}}
                         </div>
                     </div>
                     <hr>
@@ -157,7 +160,7 @@
                           <h6 class="mb-0">ZIP-Code</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          India
+                          {{companyWithBranch.pincode}}
                         </div>
                     </div>
                     <hr>
@@ -166,7 +169,7 @@
                           <h6 class="mb-0">Latitude</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          India
+                          {{companyWithBranch.latitude}}
                         </div>
                     </div>
                     <hr>
@@ -175,7 +178,7 @@
                           <h6 class="mb-0">Longitude</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                          India
+                          {{companyWithBranch.longitude}}
                         </div>
                     </div>
                     <hr>
@@ -194,55 +197,21 @@
                           <th>Country</th>
                           <th>Region</th>
                           <th>Sub-Region</th>
-                          <th>Status</th>
+                          
                         </thead>
                         <tbody>
+                          @for (branches of branch; track $index) {
                           <tr>
-                            <td data-label="S.No">1</td>
-                            <td data-label="Name">Dinesh</td>
-                            <td data-label="Age">34</td>
-                            <td data-label="Marks%">50%</td>
-                            <td data-label="Staus">Passed</td>
-                            <td data-label="Status">
-                         
-                            </td>
+                            <td data-label="S.No"></td>
+                            <td data-label="Branch Name">{{branches.branch_name}}</td>
+                            <td data-label="Country">{{branches.country}}</td>
+                            <td data-label="Region">{{branches.region}}</td>
+                            <td data-label="Sub-Region">
+                              {{branches.sub_region}}
+                              <p-tag [value]="" [severity]="getSeverityisActive(branches.is_active)" [style]="{'float':'right','margin-top':'6px'}"/>
+                            </td> 
                           </tr>
-                      
-                          <tr>
-                            <td data-label="S.No">2</td>
-                            <td data-label="Name">Kamal</td>
-                            <td data-label="Age">23</td>
-                            <td data-label="Marks%">70%</td>
-                            <td data-label="Staus">Passed</td>
-                            <td data-label="Staus">Passed</td>
-                          </tr>
-                      
-                          <tr>
-                            <td data-label="S.No">3</td>
-                            <td data-label="Name">Neha</td>
-                            <td data-label="Age">20</td>
-                            <td data-label="Marks%">90%</td>
-                            <td data-label="Staus">Passed</td>
-                            <td data-label="Staus">Passed</td>
-                          </tr>
-                      
-                          <tr>
-                            <td data-label="S.No">4</td>
-                            <td data-label="Name">Priya</td>
-                            <td data-label="Age">30</td>
-                            <td data-label="Marks%">30%</td>
-                            <td data-label="Staus">Failed</td>
-                            <td data-label="Staus">Passed</td>
-                          </tr>
-    
-                          <tr>
-                            <td data-label="S.No">5</td>
-                            <td data-label="Name">Priya</td>
-                            <td data-label="Age">30</td>
-                            <td data-label="Marks%">30%</td>
-                            <td data-label="Staus">Failed</td>
-                            <td data-label="Staus">Passed</td>
-                          </tr>
+                        }
                         </tbody>
                       </table>
                 </div>
@@ -253,7 +222,7 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+<div class="modal fade" id="AddCompanyModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -382,6 +351,25 @@
             <button class="companyadd-btn" (click)="onRegister()">Register</button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- status change modal -->
+
+<div class="modal fade" id="statusChangeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+  <div class="modal-dialog modal-dialog-centered ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Change Status</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+         <div class="row g-2 mt-2">
+          <button type="button" class="btn btn-success col-md btn-sm" (click)="onStatusChange(0)">APPROVE</button>
+          <button type="button" class="btn btn-danger col-md btn-sm" (click)="onStatusChange(1)">DECLINE</button>
+         </div>
       </div>
     </div>
   </div>

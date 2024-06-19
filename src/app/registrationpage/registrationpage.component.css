@@ -86,7 +86,7 @@
   
   .wrapper .container {
     position: relative;
-    width: 520px;
+    width: 80vh;
     min-height: 500px;
     border-radius: 6px;
     background: #fff;
