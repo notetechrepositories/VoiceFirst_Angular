@@ -1,3 +1,11 @@
+
+.content-card{
+  background-color: #ffffff;
+  min-height: 80vh;
+  padding:20px;
+  border-radius: 20px;
+}
+
 .trash-icon:hover{
     color: rgb(221, 50, 50);
 }
@@ -12,29 +20,7 @@ td {
   border-radius: 5px;
 }
 
-/* view Button */
 
-.view-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 4px 12px;
-    border-radius: 6px;
-    border: none;
-    color: #fff;
-    font-size: .8rem;
-    background: linear-gradient(180deg, #4B91F7 0%, #367AF6 100%);
-    background-origin: border-box;
-    box-shadow: 0px 0.5px 1.5px rgba(54, 122, 246, 0.25), inset 0px 0.8px 0px -0.25px rgba(255, 255, 255, 0.2);
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-  }
-  
-  .view-btn:focus {
-    box-shadow: inset 0px 0.8px 0px -0.25px rgba(255, 255, 255, 0.2), 0px 0.5px 1.5px rgba(54, 122, 246, 0.25), 0px 0px 0px 3.5px rgba(58, 108, 217, 0.5);
-    outline: 0;
-  }
 
   /* company profile image */
 
@@ -111,6 +97,7 @@ td {
       padding-left: 50%;
       text-align: left;
       position: relative;
+      height: 50px;
     }
     .table td::before {
       content: attr(data-label);

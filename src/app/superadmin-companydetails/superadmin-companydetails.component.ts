@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CompanyService } from '../services/company.service';
 import { CompanyModel } from '../model/CompanyModel';
-import { MessageService} from 'primeng/api';
+import { ConfirmationService, MessageService} from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { CommonModule } from '@angular/common';
@@ -9,6 +9,7 @@ import { TagModule } from 'primeng/tag';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { FormsModule,FormControl,Validators } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { HttpClient, HttpClientModule } from '@angular/common/http'; 
@@ -16,14 +17,14 @@ import { CompanyRegistrationModel } from '../model/CompanyRegistrationModel';
 import { log } from 'console';
 
 
-
+declare var bootstrap: any;
 
 
 @Component({
   selector: 'app-superadmin-companydetails',
   standalone: true,
-  imports: [TableModule,ToastModule,CommonModule,TagModule,DropdownModule,ButtonModule,InputTextModule,FormsModule,HttpClientModule,DialogModule],
-  providers: [MessageService, CompanyService],
+  imports: [TableModule,ToastModule,CommonModule,TagModule,DropdownModule,ButtonModule,InputTextModule,FormsModule,HttpClientModule,DialogModule,ConfirmPopupModule],
+  providers: [ConfirmationService,MessageService, CompanyService],
   templateUrl: './superadmin-companydetails.component.html',
   styleUrl: './superadmin-companydetails.component.css'
 })
@@ -53,11 +54,23 @@ export class SuperadminCompanydetailsComponent {
 
   
 
-  constructor(private companyService: CompanyService, private http: HttpClient) {}
+  constructor(private companyService: CompanyService,
+              private http: HttpClient,
+              private confirmationService:ConfirmationService,
+              private messageService:MessageService
+            ) {}
 
   ngOnInit() {
     this.getCompanyDetails();
     this. fetchCountries();
+  }
+
+  closeModal() {
+    const modalElement = document.getElementById('AddCompanyModal');
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+    if (modalInstance) {
+      modalInstance.hide();
+    }
   }
 
 
@@ -107,27 +120,100 @@ export class SuperadminCompanydetailsComponent {
     })
   }
 
-  onstatusClick(id:number){
-    this.companyId=id;
-  }
-  onStatusChange(status:number){
-    this.companyService.updateStatusBySuperadmin(this.companyId,status).subscribe({
-      next:(res)=>{
-        console.log(res);
-        const company = this.company.find(c => c.company_id === this.companyId);
-        if (company) {
-          if(status==1){
-            company.status = "DECLINED";
-          }
-          else if(status==0){
-            company.status="APPROVED";
-          }
+  onstatusClick(event:any,id:number,status:string){
+
+    if(status=="PENDING"){
+      this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: 'Are you sure you want to approve the request?',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.companyService.updateStatusBySuperadmin(id,0).subscribe({
+                next:(res)=>{
+                  console.log(res);
+                  const company = this.company.find(c => c.company_id === this.companyId);
+                  if (company) {
+                      company.status="APPROVED";
+                  }
+                  this.getCompanyDetails();
+                },
+                error:(error)=>{
+                  console.log(error);
+                }
+              })
+              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Status updated', life: 3000 });
+        },
+        reject: () => {
+          this.companyService.updateStatusBySuperadmin(id,1).subscribe({
+            next:(res)=>{
+              console.log(res);
+              const company = this.company.find(c => c.company_id === this.companyId);
+              if (company) {
+                  company.status="DECLINED";
+              }
+               this.getCompanyDetails();
+            },
+            error:(error)=>{
+              console.log(error);
+            }
+          })
+            this.messageService.add({ severity: 'info', summary: 'Rejected', detail: 'Status rejected', life: 3000 });
         }
-      },
-      error:(error)=>{
-        console.log(error);
-      }
-    })
+    });
+    }
+    else if(status=="APPROVED"){
+      this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: 'Are you sure you want to decline the request?',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.companyService.updateStatusBySuperadmin(id,1).subscribe({
+                next:(res)=>{
+                  console.log(res);
+                  const company = this.company.find(c => c.company_id === this.companyId);
+                  if (company) {
+                      company.status="DECLINED";
+                  }
+                  this.getCompanyDetails();
+                },
+                error:(error)=>{
+                  console.log(error);
+                }
+              })
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Status updated', life: 3000 });
+        },
+        reject: () => {
+            this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+        }
+    });
+    }
+    else{
+      this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: 'Are you sure you want to approve the request?',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.companyService.updateStatusBySuperadmin(id,0).subscribe({
+                next:(res)=>{
+                  console.log(res);
+                  const company = this.company.find(c => c.company_id === this.companyId);
+                  if (company) {
+                      company.status="APPROVED";
+                  }
+                  this.getCompanyDetails();
+                },
+                error:(error)=>{
+                  console.log(error);
+                }
+              })
+              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Status updated', life: 3000 });
+        },
+        reject: () => {
+            this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+        }
+    });
+    }
+   
   }
 
   showAddCompanyDialog(){
@@ -207,7 +293,6 @@ export class SuperadminCompanydetailsComponent {
             if (country) {
               this.countryViewArray.push(country);
               console.log(this.countryViewArray);
-              
             }
           }
         }
@@ -254,13 +339,10 @@ export class SuperadminCompanydetailsComponent {
     let country = this.countries.find(
       (c) => c.countryCode === this.companyRegistration.country
     );
-    console.log(this.companyRegistration);
-    
-    // this.companyRegistration.country=country.countryName;
-     
     this.companyService.registerCompanyByAdmin(this.companyRegistration).subscribe({
       next:(res)=>{
         console.log(res);
+        this.closeModal();
       },
       error:(error)=>{
         console.log(error);
