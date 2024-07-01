@@ -4,7 +4,8 @@
     z-index: 1000;;
 }
 .dropdown-item{
-    font-size:13px
+    font-size:13px;
+    width: 100%;
 }
 .nav-item img{
     cursor: pointer;
@@ -253,6 +254,30 @@ footer .flex:last-child a:hover{
     footer .flex:first-child .footer-content{
         flex:1 1 100%;
     }
+}
 
-    
+
+
+/* ================================== */
+
+
+ul li{
+    margin-bottom:20px;
+}
+
+.ul li:hover{
+    color: aliceblue;
+}
+.nav-text ,.nav-link i{
+    color: #b3b3b3;
+}
+.dropdown-menu li{
+    margin-bottom: 3px;
+    width:100%
+}
+
+@media (min-width: 1200px) {
+    .col-xl-2 {
+        width: 13.666667%;
+    }
 }

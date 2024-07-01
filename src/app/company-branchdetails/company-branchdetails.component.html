@@ -1,0 +1,111 @@
+
+<div class="row mb-5">
+    <div class="col-md-12">
+        <h2>Branch List</h2>
+        <div class="d-flex justify-content-end"><button class="companyadd-btn" data-bs-toggle="modal" data-bs-target="#AddBranchModal">Add Branch</button></div>
+    </div>
+</div>
+
+<div class="content-card">
+    <div class="card col-md-12">
+        <p-toast></p-toast>
+        <p-table [value]="branch" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}" [globalFilterFields]="['branches.status', 'branches.is_active']">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width:18%">Branch Name</th>
+                    <th style="width:25%">Address</th>
+                    <th style="width:15%">Country</th>
+                    <th style="width:15%">Region</th>
+                    <th style="width:15%">Status</th>
+                    <th style="width:7.5%"></th>
+                    <th style="width:7.5%"></th>
+                    <th style="width:7.5%"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-branches let-editing="editing" let-ri="rowIndex">
+                <tr>
+                    <td>{{branches.branch_name}}</td>
+                    <td>{{branches.address}}</td>
+                    <td>{{branches.country}}</td>
+                    <td>{{branches.region}}</td>
+                    <td >
+                        <p-tag 
+                        [value]="getStatusLabel(branches.is_active)"
+                        [severity]="getSeverityisActive(branches.is_active)"
+                        *ngIf="!editing" 
+                        [ngStyle]="{'cursor': 'pointer'}"
+                        [rounded]="true"
+                        [style]="{'width':'100px'}"
+                        (click)="confirm1($event)"
+                        />
+                        
+                    </td>
+                    <td>
+                        <button class="view-btn" role="button" (click)="onBranchView(branches.company_id)" data-bs-toggle="modal" data-bs-target="#statusChangeModal">View</button>
+                    </td>
+                    <td>
+                        <i class="bi bi-trash3-fill trash-icon"></i>
+                    </td>
+                    <td >
+                        <p-tag 
+                        [value]=""
+                        [severity]="getSeverityisActive(branches.is_active)" />
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+
+<p-confirmPopup />
+
+
+
+
+
+  <!-- Add branch modal -->
+<div class="modal fade" id="AddBranchModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Branch</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form >
+                <div class="row g-2 mt-2">
+                  <div class="col-md">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" id="floatingInputGrid" name="company_name">
+                      <label for="floatingInputGrid">Branch Name</label>
+                    </div>
+                  </div>
+                  <div class="col-md">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" id="floatingInputGrid"  name="user_name">
+                      <label for="floatingInputGrid">Username</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row g-2 mt-2">
+                  <div class="col-md">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" id="floatingInputGrid"  name="latitude">
+                      <label for="floatingInputGrid">Latitude</label>
+                    </div>
+                  </div>
+                  <div class="col-md">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" id="floatingInputGrid"  name="longitude">
+                      <label for="floatingInputGrid">Longitude</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row g-2 mt-2">
+                  <button class="companyadd-btn" (click)="onRegister()">Register</button>
+                </div>
+              </form>
+        </div>
+      </div>
+    </div>
+  </div>
