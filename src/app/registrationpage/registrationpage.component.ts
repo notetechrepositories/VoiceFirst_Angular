@@ -3,12 +3,14 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CompanyService } from '../services/company.service';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
   selector: 'app-registrationpage',
   standalone: true,
   imports: [FormsModule, HttpClientModule,ReactiveFormsModule],
+  providers:[CompanyService,MessageService],
   templateUrl: './registrationpage.component.html',
   styleUrl: './registrationpage.component.css',
 })
@@ -26,6 +28,7 @@ export class RegistrationpageComponent {
 
   constructor(private http: HttpClient,
               private fb:FormBuilder,
+              private messageService:MessageService,
               private companyService:CompanyService
               ) {}
 
@@ -39,17 +42,17 @@ export class RegistrationpageComponent {
 
     this.companyRegForm = this.fb.group({
       company_name: ['', Validators.required],
-      username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      mobile: ['', Validators.required],
+      user_name: ['', Validators.required],
       address: ['', Validators.required],
-      pincode: ['', Validators.required],
       country: ['', Validators.required],
       region: ['', Validators.required],
       sub_region: ['', Validators.required],
       place: ['', Validators.required],
-      latitude: ['', Validators.required],
-      longitude: ['', Validators.required],
+      latitude: [0, Validators.required],
+      longitude: [0, Validators.required],
+      pincode: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone_number: ['', Validators.required],
       password: ['', Validators.required]
     });
 
@@ -121,6 +124,8 @@ export class RegistrationpageComponent {
     this.placeView = this.data.postalcodes.filter(
       (country: any) => country.countryCode === event.target.value
     );
+    console.log(this.placeView);
+    
     if(this.placeView.length==1){
       this.companyRegForm.patchValue({
         place: this.placeView[0].placeName
@@ -132,21 +137,43 @@ export class RegistrationpageComponent {
     if (this.placeView[0].adminName2 != '') {
       this.subRegionView = this.placeView[0].adminName2;
     }
+    
   }
 
 
 
 
 onRegister(){
-  console.log(this.companyRegForm.value);
-  // this.companyService.registerCompanyByCompany(this.companyRegForm.value).subscribe({
-  //   next:(res)=>{
-  //     console.log(res);
-  //   },
-  //   error:(error)=>{
-  //     console.log(error);
-  //   }
-  // })
+  
+  this.companyRegForm.patchValue({
+    company_name:this.companyRegForm.value.company_name ,
+    user_name: this.companyRegForm.value.user_name,
+    address: this.companyRegForm.value.address,
+    country: this.companyRegForm.value.country,
+    region: this.companyRegForm.value.region,
+    sub_region: this.companyRegForm.value.sub_region,
+    place: this.companyRegForm.value.place,
+    latitude:parseFloat(this.companyRegForm.value.latitude),
+    longitude:parseFloat(this.companyRegForm.value.longitude),
+    pincode: this.companyRegForm.value.pincode,
+    email: this.companyRegForm.value.email,
+    phone_number: this.companyRegForm.value.phone_number,
+    password: this.companyRegForm.value.password
+  });
+
+  this.companyService.registerCompanyByCompany(this.companyRegForm.value).subscribe({
+    next:(res)=>{
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registered Successfully', life: 3000 });
+    },
+    error:(error)=>{
+      if(error.status==400){
+        this.messageService.add({ severity: 'info', summary: 'Oops!', detail: error.error.message, life: 3000 });
+      }
+      else{
+        this.messageService.add({ severity: 'error', summary: 'Oops!', detail: 'Something went wrong.', life: 3000 });
+      }
+    }
+  })
   
 }
 

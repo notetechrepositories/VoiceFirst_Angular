@@ -11,21 +11,30 @@
         <div class="user login-box">
           <div class="imgBx"><img src="assets/images/loginform.png" alt="" /></div>
           <div class="form-box">
-            <form action="" onsubmit="return false;">
+            <form action="" [formGroup]="loginForm">
               <h2>LOGIN</h2>
-              <input type="text" name="" placeholder="Username" />
-              <input type="password" name="" placeholder="Password" />
-              <input type="submit" name="" value="Login" />
+              <input type="text" name="" placeholder="Username" formControlName="username"/>
+              <input type="password" name="" placeholder="Password" formControlName="password"/>
+              <input type="submit" name="" value="Login" (click)=" onLogin()" />
               <p class="signup">
                 Don't have an account ?
                 <a onclick="toggleForm();">Sign Up.</a>
               </p>
+              @if(warningMsg){
+                <div class="warning-box">
+                  <p><i class="bi bi-exclamation-triangle"></i>&nbsp;You are already Logged in</p>
+                  <a style="text-decoration: underline;" routerLink="home">Go to Home</a>
+                </div>
+              }
+
             </form>
+          
           </div>
+          
         </div>
         <div class="user signup-box">
           <div class="form-box">
-            <form action="" onsubmit="return false;">
+            <form>
                 @if(CreateAccountView){
                     <h2>Create an account</h2>
                     <input type="text" name="" placeholder="First Name" />
@@ -41,14 +50,13 @@
                     <input type="password" name="" placeholder="Confirm Password" />
                     <input type="submit" name="" value="Sign Up" />
                 }
-                   
-              
-              
               <p class="signup">
                 Already have an account ?
                 <a onclick="toggleForm();">Sign in.</a>
               </p>
             </form>
+         
+
           </div>
           <div class="imgBx"><img src="assets/images/loginform.png" alt="" /></div>
         </div>
