@@ -15,18 +15,18 @@
                     <label for="companyName">Company Name</label>
                 </div>
                 <div class="form-group col-md">
-                    <input type="text" formControlName="username">
-                    <label for="companyName">Username</label>
+                    <input type="text" formControlName="user_name">
+                    <label>Username</label>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-md">
-                    <input type="email"  formControlName="company_name">
-                    <label for="companyName">Email</label>
+                    <input type="email"  formControlName="email">
+                    <label>Email</label>
                 </div>
                 <div class="form-group col-md">
-                    <input type="text" formControlName="mobile">
-                    <label for="companyName">Phone</label>
+                    <input type="text" formControlName="phone_number">
+                    <label>Phone</label>
                 </div>
             </div>
             <div class="row">
@@ -86,7 +86,7 @@
                         <select formControlName="place">
                             <option value="" disabled selected></option>
                             @for (Place of placeView; track $index) {
-                            <option value="{{Place}}">{{Place.placeName}}</option>
+                            <option value="{{Place.placeName}}">{{Place.placeName}}</option>
                             }
                         </select>
                     </div>

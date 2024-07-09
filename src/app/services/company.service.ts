@@ -8,7 +8,7 @@ export class CompanyService {
 
   constructor(private http:HttpClient){}
 
-  accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJKV1RTZXJ2aWNlQWNjZXNzVG9rZW4iLCJqdGkiOiJjMzdiNmY4ZS0zZTAwLTQwMzktYjAzYi00MDIzNzllOTE4MmEiLCJpYXQiOiIxNC0wNi0yMDI0IDEwOjE0OjMwIiwidXNlcl9pZCI6IjEiLCJleHAiOjE3MjE4MTYwNzAsImlzcyI6IkpXVEF1dGhlbnRpY2F0aW9uU2VydmVyIiwiYXVkIjoiSldUU2VydmljZVBvc3RtYW5DbGllbnQifQ.TORSKJB5fdcmWPgDUc8UN8XqR_j4wxYRquhkC4HH8pM"
+  accessToken = localStorage.getItem('accessToken')
   headers = new HttpHeaders({
     'Authorization': `Bearer ${this.accessToken}`
   });

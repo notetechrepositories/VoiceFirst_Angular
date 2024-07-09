@@ -6,6 +6,7 @@
 .dropdown-item{
     font-size:13px;
     width: 100%;
+    cursor: pointer;
 }
 .nav-item img{
     cursor: pointer;
