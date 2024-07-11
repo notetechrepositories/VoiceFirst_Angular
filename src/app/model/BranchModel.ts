@@ -1,5 +1,5 @@
 export interface BranchModel{
-address: string;
+  address: string;
   branch_id: number;
   branch_name: string;
   company_id: number;

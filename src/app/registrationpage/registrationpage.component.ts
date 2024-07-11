@@ -4,12 +4,13 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CompanyService } from '../services/company.service';
 import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 
 @Component({
   selector: 'app-registrationpage',
   standalone: true,
-  imports: [FormsModule, HttpClientModule,ReactiveFormsModule],
+  imports: [FormsModule, HttpClientModule,ReactiveFormsModule,ToastModule],
   providers:[CompanyService,MessageService],
   templateUrl: './registrationpage.component.html',
   styleUrl: './registrationpage.component.css',
@@ -161,21 +162,21 @@ onRegister(){
     password: this.companyRegForm.value.password
   });
 
-  this.companyService.registerCompanyByCompany(this.companyRegForm.value).subscribe({
-    next:(res)=>{
-      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registered Successfully', life: 3000 });
-    },
-    error:(error)=>{
-      if(error.status==400){
-        this.messageService.add({ severity: 'info', summary: 'Oops!', detail: error.error.message, life: 3000 });
+    this.companyService.registerCompanyByCompany(this.companyRegForm.value).subscribe({
+      next:(res)=>{
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registered Successfully', life: 3000 });
+      },
+      error:(error)=>{
+        if(error.status==400){
+          this.messageService.add({ severity: 'info', summary: 'Oops!', detail: error.error.message, life: 3000 });
+        }
+        else{
+          this.messageService.add({ severity: 'error', summary: 'Oops!', detail: 'Something went wrong.', life: 3000 });
+        }
       }
-      else{
-        this.messageService.add({ severity: 'error', summary: 'Oops!', detail: 'Something went wrong.', life: 3000 });
-      }
-    }
-  })
-  
-}
+    })
+    
+  }
 
 
 }
