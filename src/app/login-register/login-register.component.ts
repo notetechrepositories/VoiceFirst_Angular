@@ -4,12 +4,13 @@ import { FormsModule,Validators,ReactiveFormsModule, FormBuilder, FormGroup } fr
 import { AuthService } from '../services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
+import { BrowserService } from '../services/browser.service';
 
 
 @Component({
   selector: 'app-login-register',
   standalone: true,
-  providers: [AuthService],
+  providers: [AuthService,BrowserService],
   imports: [RouterLink,FormsModule,ReactiveFormsModule,HttpClientModule],
   templateUrl: './login-register.component.html',
   styleUrl: './login-register.component.css'
@@ -19,13 +20,12 @@ export class LoginRegisterComponent {
 
   loginForm!:FormGroup
 
-  decodedToken!:any;
-
   warningMsg:boolean=false ;
 
   constructor(private router:Router,
               private fb:FormBuilder,
-              private authService:AuthService
+              private authService:AuthService,
+              private browserService:BrowserService
               ){}
 
   ngOnInit(){
@@ -49,8 +49,7 @@ export class LoginRegisterComponent {
     this.authService.login(this.loginForm.value).subscribe({
       next:(res)=>{
         console.log(res);
-        localStorage.setItem('accessToken',res.data);
-        const decodedToken = this.decodeToken(res.data);
+        this.browserService.setItem('accessToken',res.data);
         location.reload();
       },
       error:(error)=>{
@@ -59,11 +58,4 @@ export class LoginRegisterComponent {
     })
   }
 
-  decodeToken(token: string): any {
-    try {
-      return jwtDecode(token);
-    } catch (Error) {
-      return null;
-    }
-  }
 }

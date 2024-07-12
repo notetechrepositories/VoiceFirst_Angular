@@ -20,8 +20,6 @@ export class CustomerProfileComponent {
 
   ngOnInit(){
     this.getCustomerDetail();
-    console.log(localStorage.getItem('accessToken'));
-    
   }
    
   getCustomerDetail(){

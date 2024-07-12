@@ -6,6 +6,7 @@ import { CompanyBranchdetailsComponent } from "../company-branchdetails/company-
 
 import { AuthService } from '../services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserService } from '../services/browser.service';
 
 
 
@@ -17,7 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
     templateUrl: './navigation-footer.component.html',
     styleUrl: './navigation-footer.component.css',
     imports: [RouterOutlet, RouterLink, RouterLinkActive, SuperadminCompanydetailsComponent, CompanyBranchdetailsComponent,HttpClientModule],
-    providers:[AuthService]
+    providers:[AuthService,BrowserService]
 })
 export class NavigationFooterComponent {
 
@@ -33,11 +34,11 @@ export class NavigationFooterComponent {
 
     decodedToken:any;
 
-   constructor(private router:Router,private authService:AuthService){}
+   constructor(private router:Router,private authService:AuthService,private browserService:BrowserService){}
 
    ngOnInit(){
-    this.acceessToken=localStorage.getItem('accessToken');
-    this.decodedToken = this.decodeToken(this.acceessToken);
+    this.acceessToken=this.browserService.getItem('accessToken');
+    this.decodedToken = this.authService.decodeToken(this.acceessToken);
     console.log(this.decodedToken);
     
     if(this.acceessToken!=null){
@@ -67,13 +68,6 @@ export class NavigationFooterComponent {
     }
    }
 
-   decodeToken(token: string): any {
-    try {
-      return jwtDecode(token);
-    } catch (Error) {
-      return null;
-    }
-  }
 
    goToLogin(){
     this.router.navigate(['/login-register']);
@@ -91,7 +85,7 @@ export class NavigationFooterComponent {
     //         console.log(error);
     //     }
     // })
-        localStorage.clear();
+        this.browserService.clear();
         this.router.navigate(['']).then(() => {
             window.location.reload();
         });
