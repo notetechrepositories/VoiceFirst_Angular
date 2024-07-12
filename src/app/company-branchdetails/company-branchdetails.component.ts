@@ -11,6 +11,8 @@ import { BranchService } from '../services/branch.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http'; 
 import { jwtDecode } from 'jwt-decode';
 import { BranchRegistrationModel } from '../model/BranchRegistrationModel';
+import { BrowserService } from '../services/browser.service';
+import { AuthService } from '../services/auth.service';
 
 
 
@@ -19,7 +21,7 @@ declare var bootstrap: any;
 @Component({
   selector: 'app-company-branchdetails',
   standalone: true,
-  providers: [ConfirmationService,MessageService,BranchService],
+  providers: [ConfirmationService,MessageService,BranchService,BrowserService,AuthService],
   imports: [TagModule,ToastModule,TableModule,FormsModule,CommonModule,HttpClientModule,ConfirmPopupModule,ReactiveFormsModule],
   templateUrl: './company-branchdetails.component.html',
   styleUrl: './company-branchdetails.component.css'
@@ -54,7 +56,9 @@ export class CompanyBranchdetailsComponent {
               private confirmationService:ConfirmationService,
               private messageService:MessageService,
               private fb:FormBuilder,
-              private http:HttpClient
+              private http:HttpClient,
+              private browserService:BrowserService,
+              private authService:AuthService
              ){}
 
   ngOnInit(){
@@ -186,8 +190,8 @@ export class CompanyBranchdetailsComponent {
   }
 
   getBranchByCompanyId(){
-    this.accessToken= localStorage.getItem('accessToken');
-    const decodedToken = this.decodeToken(this.accessToken);
+    this.accessToken= this.browserService.getItem('accessToken');
+    const decodedToken = this.authService.decodeToken(this.accessToken);
     this.companyId=decodedToken.user_id
     this.branchService.getBranchByCompanyId(this.companyId).subscribe({
       next:(res)=>{
@@ -278,14 +282,6 @@ onStatusChange(event:any,status:number){
     }
 });
   
-}
-
-decodeToken(token: string): any {
-  try {
-    return jwtDecode(token);
-  } catch (Error) {
-    return null;
-  }
 }
 
 //-----------------------------Map---------------------------------

@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,14 @@ export class AuthService {
 
   logout(){
     return this.http.post<any>(`${this.apiUrl}/authentication/logout`,{headers:this.headers});
+  }
+
+  decodeToken(token: string): any {
+    try {
+      return jwtDecode(token);
+    } catch (Error) {
+      return null;
+    }
   }
 
 }
