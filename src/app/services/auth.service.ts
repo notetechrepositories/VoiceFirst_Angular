@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
+import { BrowserService } from './browser.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,9 @@ export class AuthService {
 
   accessToken :any;
 
-  constructor(private http:HttpClient) {
+  constructor(private http:HttpClient,private browserService:BrowserService) {
     if (typeof window !== 'undefined') {
-      this.accessToken = localStorage.getItem('accessToken');
+      this.accessToken = this.browserService.getItem('accessToken');
     }
    }
 

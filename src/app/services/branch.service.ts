@@ -1,15 +1,16 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BranchRegistrationModel } from '../model/BranchRegistrationModel';
+import { BrowserService } from './browser.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BranchService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient,private browserService:BrowserService) { }
 
-  accessToken = localStorage.getItem('accessToken')
+  accessToken = this.browserService.getItem('accessToken')
   headers = new HttpHeaders({
     'Authorization': `Bearer ${this.accessToken}`
   });
