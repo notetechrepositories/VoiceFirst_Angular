@@ -240,8 +240,6 @@ export class CompanyBranchdetailsComponent {
       phone_number: this.branchAddForm.value.phone_number,
       email: this.branchAddForm.value.email,
       company_id: this.companyId,
-      latitude:this.latitude,
-      longitude:this.longitude,
       pincode: this.branchAddForm.value.pincode,
       country: this.branchAddForm.value.country,
       region: this.branchAddForm.value.region,
@@ -251,17 +249,17 @@ export class CompanyBranchdetailsComponent {
     });
     const branchData=this.branchAddForm.value;
     console.log(branchData);
-      // this.branchService.insertBranch(branchData).subscribe({
-      //   next:(res)=>{
-      //     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registered Successfully', life: 3000 });
-      //     this.closeModal();
-      //     this.selectedFile=null;
-      //   },
-      //   error:(error)=>{
-      //     console.log("Error",error);
-      //     this.messageService.add({ severity: 'error', summary: 'Oops!', detail: 'Something went wrong', life: 3000 });
-      //   }
-      // })
+      this.branchService.insertBranch(branchData).subscribe({
+        next:(res)=>{
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registered Successfully', life: 3000 });
+          this.closeModal();
+          this.selectedFile=null;
+          this.getBranchByCompanyId();
+        },
+        error:(error)=>{
+          this.messageService.add({ severity: 'error', summary: 'Oops!', detail: 'Something went wrong', life: 3000 });
+        }
+      })
   }
 
 
@@ -284,7 +282,8 @@ onStatusChange(event:any,status:number,id:number){
       this.branchService.updateStatus(updatedStatus,this.branchId).subscribe({
         next:(res)=>{
          console.log(res);
-         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Successfully updated', life: 3000 });
+         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Status changed successfully', life: 3000 });
+         this.getBranchByCompanyId();
         },
         error:(error)=>{
           console.log(error);
@@ -322,7 +321,6 @@ mapInitialization() {
     language: 'es',
   });
 
-  // Append the geocoder to the DOM element
   document.getElementById('geocoder-container')!.appendChild(geocoder.onAdd(this.map));
 
   geocoder.on('result', (e: any) => {
@@ -333,6 +331,7 @@ mapInitialization() {
       latitude:this.latitude,
       longitude:this.longitude
     });
+    this.showMessage=false;
   });
 
   geocoder.on('clear', () => {
