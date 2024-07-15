@@ -13,6 +13,9 @@ import { jwtDecode } from 'jwt-decode';
 import { BranchRegistrationModel } from '../model/BranchRegistrationModel';
 import { BrowserService } from '../services/browser.service';
 import { AuthService } from '../services/auth.service';
+import mapboxgl from 'mapbox-gl';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+
 
 
 
@@ -51,7 +54,10 @@ export class CompanyBranchdetailsComponent {
   placeView: any[] = [];
 
 
+  map: mapboxgl.Map | any;
 
+  showMessage:boolean=false;
+  
   constructor(private branchService:BranchService,
               private confirmationService:ConfirmationService,
               private messageService:MessageService,
@@ -65,6 +71,7 @@ export class CompanyBranchdetailsComponent {
     this.getBranchByCompanyId()
     this. fetchCountries();
     this.form(); 
+    this.mapInitialization();
   }
 
   form(){
@@ -187,6 +194,7 @@ export class CompanyBranchdetailsComponent {
   onAddBranch(){
     this.branchAddForm.reset();
     this.selectedFile=null;
+    this.showMessage=false;
   }
 
   getBranchByCompanyId(){
@@ -258,9 +266,13 @@ onstatusClick(id:number){
   this.branchId=id;
 }
 
-onStatusChange(event:any,status:number){
+onStatusChange(event:any,status:number,id:number){
+  this.branchId=id;
+  console.log("curremtStatus:",status);
+  
   const updatedStatus = status === 1 ? 0 : 1;
-
+  console.log("updated status:",updatedStatus);
+  
   this.confirmationService.confirm({
     target: event.target as EventTarget,
     message: 'Are you sure you want to change status?',
@@ -284,6 +296,32 @@ onStatusChange(event:any,status:number){
   
 }
 
+onlatlongClick(){
+  this.showMessage=true;
+}
+
 //-----------------------------Map---------------------------------
+
+mapInitialization() {
+  (mapboxgl as any).accessToken = 'pk.eyJ1IjoiYXRodWwta3MiLCJhIjoiY2x5Z3lmZWZtMGZ4czJ3b3JtdnE0bHZhMiJ9.Oad5fegSE0aeeN9_O2bo9w';
+
+  this.map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v12',
+    center: [-74.5, 40],
+    zoom: 9,
+  });
+
+  const geocoder = new MapboxGeocoder({
+    accessToken: (mapboxgl as any).accessToken,
+    mapboxgl: mapboxgl as any,
+    marker: true,
+    language: 'es',
+  });
+
+  // Append the geocoder to the DOM element
+  document.getElementById('geocoder-container')!.appendChild(geocoder.onAdd(this.map));
+}
+
 
 }

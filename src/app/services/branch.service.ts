@@ -20,7 +20,7 @@ export class BranchService {
   }
 
   updateStatus(action:number,id:number){
-    return this.http.put<any>(`https://localhost:7134/api/branch/update-branch-status?action=${action}&branchId=${id}`,{});
+    return this.http.put<any>(`https://localhost:7134/api/branch/update-branch-status?action=${action}&branchId=${id}`,{},{headers:this.headers});
   }
 
   insertBranch(branchRegistration:BranchRegistrationModel){

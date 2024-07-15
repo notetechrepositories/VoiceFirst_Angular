@@ -36,7 +36,7 @@
                         [ngStyle]="{'cursor': 'pointer'}"
                         [rounded]="true"
                         [style]="{'width':'100px'}"
-                        (click)="onStatusChange($event,branches.is_active)"
+                        (click)="onStatusChange($event,branches.is_active,branches.branch_id)"
                         />
                         
                     </td>
@@ -79,7 +79,7 @@
           <div class="row g-2 mt-2">
             <div class="col-md">
               <div class="form-floating">
-                <input type="text" class="form-control" id="floatingInputGrid" formControlName="branch_name">
+                <input type="text" class="form-control" id="floatingInputGrid" formControlName="branch_name" name="branch_name">
                 <label for="floatingInputGrid">Branch Name</label>
               </div>
             </div>
@@ -173,22 +173,32 @@
           <div class="row g-2 mt-2">
             <div class="col-md">
               <div class="form-floating">
-                <input type="text" class="form-control" id="floatingInputGrid" formControlName="latitude" >
-                <label for="floatingInputGrid">Latitude</label>
-              </div>
-            </div>
-            <div class="col-md">
-              <div class="form-floating">
-                <input type="text" class="form-control" id="floatingInputGrid" formControlName="longitude">
-                <label for="floatingInputGrid">Longitude</label>
-              </div>
-            </div>
-            <div class="col-md">
-              <div class="form-floating">
                 <input type="file" class="form-control" id="floatingInputGrid" (change)="onFileSelected($event)">
               </div>
             </div>
+            <div class="col-md">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="floatingInputGrid" formControlName="latitude" readonly (click)="onlatlongClick()">
+                <label for="floatingInputGrid">Latitude</label>
+                <small *ngIf="showMessage" style="font-size: 11px;font-style: italic;font-weight: 500;">**Note-Select location from the map</small>
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="form-floating">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="floatingInputGrid" formControlName="longitude" readonly>
+                  <label for="floatingInputGrid">Longitude</label>
+                  
+                </div>
+              </div>
+            </div>
           </div>
+
+          <div class="map-container">
+            <div id='geocoder-container' class="mb-2"></div>
+            <div id="map"></div>
+          </div>
+
           <div class="row g-2 mt-2">
             <button class="companyadd-btn" (click)="onRegister()">Register</button>
           </div>
