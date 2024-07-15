@@ -56,6 +56,9 @@ export class CompanyBranchdetailsComponent {
 
   map: mapboxgl.Map | any;
 
+  latitude: number | null = null;
+  longitude: number | null = null;
+
   showMessage:boolean=false;
   
   constructor(private branchService:BranchService,
@@ -237,8 +240,8 @@ export class CompanyBranchdetailsComponent {
       phone_number: this.branchAddForm.value.phone_number,
       email: this.branchAddForm.value.email,
       company_id: this.companyId,
-      latitude:parseFloat(this.branchAddForm.value.latitude),
-      longitude:parseFloat(this.branchAddForm.value.longitude),
+      latitude:this.latitude,
+      longitude:this.longitude,
       pincode: this.branchAddForm.value.pincode,
       country: this.branchAddForm.value.country,
       region: this.branchAddForm.value.region,
@@ -248,17 +251,17 @@ export class CompanyBranchdetailsComponent {
     });
     const branchData=this.branchAddForm.value;
     console.log(branchData);
-      this.branchService.insertBranch(branchData).subscribe({
-        next:(res)=>{
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registered Successfully', life: 3000 });
-          this.closeModal();
-          this.selectedFile=null;
-        },
-        error:(error)=>{
-          console.log("Error",error);
-          this.messageService.add({ severity: 'error', summary: 'Oops!', detail: 'Something went wrong', life: 3000 });
-        }
-      })
+      // this.branchService.insertBranch(branchData).subscribe({
+      //   next:(res)=>{
+      //     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registered Successfully', life: 3000 });
+      //     this.closeModal();
+      //     this.selectedFile=null;
+      //   },
+      //   error:(error)=>{
+      //     console.log("Error",error);
+      //     this.messageService.add({ severity: 'error', summary: 'Oops!', detail: 'Something went wrong', life: 3000 });
+      //   }
+      // })
   }
 
 
@@ -321,6 +324,27 @@ mapInitialization() {
 
   // Append the geocoder to the DOM element
   document.getElementById('geocoder-container')!.appendChild(geocoder.onAdd(this.map));
+
+  geocoder.on('result', (e: any) => {
+    const coords = e.result.geometry.coordinates;
+    this.latitude = coords[1];
+    this.longitude = coords[0];
+    this.branchAddForm.patchValue({
+      latitude:this.latitude,
+      longitude:this.longitude
+    });
+  });
+
+  geocoder.on('clear', () => {
+    this.latitude = null;
+    this.longitude = null;
+    this.branchAddForm.patchValue({
+      latitude:this.latitude,
+      longitude:this.longitude
+    });
+  });
+  
+  
 }
 
 
