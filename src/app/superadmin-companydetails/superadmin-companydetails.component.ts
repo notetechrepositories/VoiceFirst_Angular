@@ -14,7 +14,8 @@ import { FormsModule,FormControl,Validators } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { HttpClient, HttpClientModule } from '@angular/common/http'; 
 import { CompanyRegistrationModel } from '../model/CompanyRegistrationModel';
-import { log } from 'console';
+import mapboxgl from 'mapbox-gl';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
 
 declare var bootstrap: any;
@@ -51,7 +52,11 @@ export class SuperadminCompanydetailsComponent {
  
   branch:any[]=[];
   companyWithBranch:any;
+  map: mapboxgl.Map | any;
 
+
+
+  showMessage:boolean=false;
   
 
   constructor(private companyService: CompanyService,
@@ -63,6 +68,7 @@ export class SuperadminCompanydetailsComponent {
   ngOnInit() {
     this.getCompanyDetails();
     this. fetchCountries();
+    this.mapInitialization();
   }
 
   closeModal() {
@@ -110,8 +116,6 @@ export class SuperadminCompanydetailsComponent {
           this.companyWithBranch=res;
           this.branch=res.getBranch;
           console.log(this.branch);
-          
-          
       },
       error:(error)=>{
         console.log(error);
@@ -250,6 +254,7 @@ export class SuperadminCompanydetailsComponent {
     this.companyRegistration.longitude=0;
     this.companyRegistration.email='';
     this.companyRegistration.phone_number='';
+
   }
 
   getCountryDetailsByPincode(event:any) {
@@ -339,19 +344,59 @@ export class SuperadminCompanydetailsComponent {
     let country = this.countries.find(
       (c) => c.countryCode === this.companyRegistration.country
     );
+    console.log(this.companyRegistration);
+    
     this.companyService.registerCompanyByAdmin(this.companyRegistration).subscribe({
       next:(res)=>{
-        console.log(res);
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registered Successfully', life: 3000 });
         this.closeModal();
+        this.getCompanyDetails();
       },
       error:(error)=>{
         console.log(error);
+        this.messageService.add({ severity: 'error', summary: 'Oops!', detail: 'Something went wrong', life: 3000 });
       }
     })
     
   }
 
-// -----------------------------------------
+ onlatlongClick(){
+  this.showMessage=true;
+ }
+
+//-----------------------------Map---------------------------------
+
+mapInitialization() {
+  (mapboxgl as any).accessToken = 'pk.eyJ1IjoiYXRodWwta3MiLCJhIjoiY2x5Z3lmZWZtMGZ4czJ3b3JtdnE0bHZhMiJ9.Oad5fegSE0aeeN9_O2bo9w';
+  this.map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v12',
+    center: [-74.5, 40],
+    zoom: 9,
+  });
+
+  const geocoder = new MapboxGeocoder({
+    accessToken: (mapboxgl as any).accessToken,
+    mapboxgl: mapboxgl as any,
+    marker: true,
+    language: 'es',
+  });
+
+  document.getElementById('geocoder-container')!.appendChild(geocoder.onAdd(this.map));
+
+  geocoder.on('result', (e: any) => {
+    const coords = e.result.geometry.coordinates;
+    this.companyRegistration.latitude = coords[1];
+    this.companyRegistration.longitude = coords[0];
+    this.showMessage=false;
+  });
+
+  geocoder.on('clear', () => {
+    this.companyRegistration.latitude = 0;
+    this.companyRegistration.longitude = 0;
+  });
+  
+}
 
 
 }

@@ -1,16 +1,19 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CompanyService } from '../services/company.service';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import mapboxgl from 'mapbox-gl';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
 
 @Component({
   selector: 'app-registrationpage',
   standalone: true,
-  imports: [FormsModule, HttpClientModule,ReactiveFormsModule,ToastModule],
+  imports: [FormsModule, HttpClientModule,ReactiveFormsModule,ToastModule,CommonModule],
   providers:[CompanyService,MessageService],
   templateUrl: './registrationpage.component.html',
   styleUrl: './registrationpage.component.css',
@@ -27,6 +30,13 @@ export class RegistrationpageComponent {
 
   companyRegForm!:FormGroup;
 
+  map: mapboxgl.Map | any;
+
+  latitude: number | null = null;
+  longitude: number | null = null;
+
+  showMessage:boolean=false;
+
   constructor(private http: HttpClient,
               private fb:FormBuilder,
               private messageService:MessageService,
@@ -36,6 +46,7 @@ export class RegistrationpageComponent {
   ngOnInit() {
     this.fetchCountries();
     this.formfile();
+    this.mapInitialization();
   }
 
 
@@ -154,8 +165,6 @@ onRegister(){
     region: this.companyRegForm.value.region,
     sub_region: this.companyRegForm.value.sub_region,
     place: this.companyRegForm.value.place,
-    latitude:parseFloat(this.companyRegForm.value.latitude),
-    longitude:parseFloat(this.companyRegForm.value.longitude),
     pincode: this.companyRegForm.value.pincode,
     email: this.companyRegForm.value.email,
     phone_number: this.companyRegForm.value.phone_number,
@@ -165,6 +174,7 @@ onRegister(){
     this.companyService.registerCompanyByCompany(this.companyRegForm.value).subscribe({
       next:(res)=>{
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registered Successfully', life: 3000 });
+        this.companyRegForm.reset();
       },
       error:(error)=>{
         if(error.status==400){
@@ -175,6 +185,54 @@ onRegister(){
         }
       }
     })
+    
+  }
+
+  onlatlongClick(){
+    this.showMessage=true;
+  }
+
+  //-----------------------------Map---------------------------------
+
+  mapInitialization() {
+    (mapboxgl as any).accessToken = 'pk.eyJ1IjoiYXRodWwta3MiLCJhIjoiY2x5Z3lmZWZtMGZ4czJ3b3JtdnE0bHZhMiJ9.Oad5fegSE0aeeN9_O2bo9w';
+  
+    this.map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [-74.5, 40],
+      zoom: 9,
+    });
+  
+    const geocoder = new MapboxGeocoder({
+      accessToken: (mapboxgl as any).accessToken,
+      mapboxgl: mapboxgl as any,
+      marker: true,
+      language: 'es',
+    });
+  
+    document.getElementById('geocoder-container')!.appendChild(geocoder.onAdd(this.map));
+  
+    geocoder.on('result', (e: any) => {
+      const coords = e.result.geometry.coordinates;
+      this.latitude = coords[1];
+      this.longitude = coords[0];
+      this.companyRegForm.patchValue({
+        latitude:this.latitude,
+        longitude:this.longitude
+      });
+      this.showMessage=false;
+    });
+  
+    geocoder.on('clear', () => {
+      this.latitude = null;
+      this.longitude = null;
+      this.companyRegForm.patchValue({
+        latitude:this.latitude,
+        longitude:this.longitude
+      });
+    });
+    
     
   }
 

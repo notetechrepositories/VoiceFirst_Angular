@@ -169,4 +169,25 @@ input:focus + label, select:focus + label , textarea:focus + label{
 }
 
 
+/* map */
+
+.map-container{
+  height: 352px;
+  width: 100%;
+  padding: 20px;
+  margin-top: 15px;
+  margin-bottom: 32px;
+  border-radius: 10px;
+  background-color: #efefef;
+}
+
+#map{
+  width: 100%;
+  height: 265px;
+  box-shadow: rgb(99 99 99 / 71%) 0px 2px 8px 0px;
+  border-radius: 10px;
+}
+
+
+
 
