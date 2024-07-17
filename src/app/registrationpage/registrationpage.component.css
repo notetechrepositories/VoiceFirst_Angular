@@ -162,6 +162,7 @@ input::placeholder, select::placeholder {
 /* Focus styles to outline the box when focused */
 input:focus, select:focus, textarea:focus {
   outline: none;
+  border:2px solid var(--secondary);
 }
 input:focus + label, select:focus + label , textarea:focus + label{
   color: var(--secondary);

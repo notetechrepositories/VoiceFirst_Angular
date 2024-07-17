@@ -46,6 +46,7 @@ export class RegistrationpageComponent {
   ngOnInit() {
     this.fetchCountries();
     this.formfile();
+    this.mapInitialization();
   }
 
 
