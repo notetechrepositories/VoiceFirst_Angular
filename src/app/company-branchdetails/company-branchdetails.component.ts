@@ -15,6 +15,7 @@ import { BrowserService } from '../services/browser.service';
 import { AuthService } from '../services/auth.service';
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import { log } from 'node:console';
 
 
 
@@ -198,6 +199,8 @@ export class CompanyBranchdetailsComponent {
     this.branchAddForm.reset();
     this.selectedFile=null;
     this.showMessage=false;
+    console.log(this.countries);
+    
   }
 
   getBranchByCompanyId(){
@@ -234,6 +237,14 @@ export class CompanyBranchdetailsComponent {
   }
   
   onRegister(){
+
+    const selectedCountryCode = this.branchAddForm.value.country;
+    const selectedCountry = this.countries.find(
+      (country) => country.countryCode === selectedCountryCode
+    );
+    console.log(selectedCountry);
+    
+
     this.branchAddForm.patchValue({
       branch_name:this.branchAddForm.value.branch_name ,
       address: this.branchAddForm.value.address,
@@ -241,7 +252,7 @@ export class CompanyBranchdetailsComponent {
       email: this.branchAddForm.value.email,
       company_id: this.companyId,
       pincode: this.branchAddForm.value.pincode,
-      country: this.branchAddForm.value.country,
+      country: selectedCountry.countryName,
       region: this.branchAddForm.value.region,
       sub_region: this.branchAddForm.value.sub_region,
       place: this.branchAddForm.value.place,

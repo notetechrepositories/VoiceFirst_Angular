@@ -174,11 +174,11 @@ input:focus + label, select:focus + label , textarea:focus + label{
 .map-container{
   height: 352px;
   width: 100%;
-  padding: 20px;
+  /* padding: 20px; */
   margin-top: 15px;
   margin-bottom: 32px;
   border-radius: 10px;
-  background-color: #efefef;
+  /* background-color: #efefef; */
 }
 
 #map{

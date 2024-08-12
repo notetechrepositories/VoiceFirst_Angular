@@ -39,7 +39,11 @@ a{
       margin-top: 30px; 
   }
   .banner .title p{
-     font-size: 8px;
+    font-size: 12px;
+    color: #f9ecec;
+    text-transform: uppercase;
+    font-weight: 300;
+    margin-bottom: 0px;
   }
 
 }
@@ -264,10 +268,10 @@ a{
     align-items: center; 
     justify-content: center;
     text-align: center;
+    margin-top: 46px;
   }
 
   .heading-with-lines h1{
-    font-weight: 700;
     font-size: 50px;
     margin: 0;
     letter-spacing: 0.2rem;
